@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Status, Task } from '../../types'
 import TaskCard from './TaskCard'
 
@@ -14,6 +15,7 @@ export default function Column({
   onAdd,
   onTaskClick,
   onTaskDelete,
+  onDropTask,
 }: {
   status: Status
   label: string
@@ -21,11 +23,29 @@ export default function Column({
   onAdd: () => void
   onTaskClick: (task: Task) => void
   onTaskDelete: (task: Task) => void
+  onDropTask?: (taskId: string, status: Status) => void
 }) {
+  const [dragOver, setDragOver] = useState(false)
+
   return (
     <div
       data-testid={`column-${status}`}
-      className="flex w-full min-w-0 flex-col rounded-xl bg-white/60 md:w-80 md:shrink-0"
+      onDragOver={(e) => {
+        if (!onDropTask) return
+        e.preventDefault()
+        setDragOver(true)
+      }}
+      onDragLeave={() => setDragOver(false)}
+      onDrop={(e) => {
+        if (!onDropTask) return
+        e.preventDefault()
+        setDragOver(false)
+        const id = e.dataTransfer.getData('text/plain')
+        if (id) onDropTask(id, status)
+      }}
+      className={`flex w-full min-w-0 flex-col rounded-xl bg-white/60 transition md:w-80 md:shrink-0 ${
+        dragOver ? 'ring-2 ring-monday-purple ring-offset-2' : ''
+      }`}
     >
       <div className={`flex items-center justify-between rounded-t-xl px-3 py-2 ${headerStyles[status]}`}>
         <span className="text-sm font-semibold">

@@ -40,6 +40,11 @@ export default function TaskCard({
       data-testid="task-card"
       role="button"
       tabIndex={0}
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData('text/plain', task.id)
+        e.dataTransfer.effectAllowed = 'move'
+      }}
       aria-label={`${task.title}. ${task.priority} priority, in ${statusLabel} column. Press Enter to edit.`}
       onClick={onClick}
       onKeyDown={(e) => {
@@ -48,7 +53,7 @@ export default function TaskCard({
           onClick()
         }
       }}
-      className={`group cursor-pointer rounded-lg border border-l-4 border-monday-border bg-white p-3 shadow-card transition hover:shadow-modal focus:outline-none focus-visible:ring-2 focus-visible:ring-monday-purple ${priorityBorder[task.priority]}`}
+      className={`group cursor-grab rounded-lg border border-l-4 border-monday-border bg-white p-3 shadow-card transition hover:shadow-modal focus:outline-none focus-visible:ring-2 focus-visible:ring-monday-purple active:cursor-grabbing ${priorityBorder[task.priority]}`}
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-monday-text">{task.title}</h3>
