@@ -40,7 +40,7 @@ export default function TaskCard({
       data-testid="task-card"
       role="button"
       tabIndex={0}
-      aria-label={`${task.title}. Priority ${task.priority}. Status ${statusLabel}. Press Enter to edit.`}
+      aria-label={`${task.title}. ${task.priority} priority, in ${statusLabel} column. Press Enter to edit.`}
       onClick={onClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
