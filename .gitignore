@@ -6,6 +6,13 @@ __pycache__/
 # Build output
 dist/
 build/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Test artifacts
+test-results/
+playwright-report/
 
 # Env / secrets
 .env
