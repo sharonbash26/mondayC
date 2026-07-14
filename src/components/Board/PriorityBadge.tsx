@@ -14,11 +14,22 @@ const labels: Record<Priority, string> = {
   urgent: 'Urgent',
 }
 
+// Distinct shape per priority so it is distinguishable WITHOUT relying on
+// color alone (colorblind-safe): ▁ low, ▂ medium, ▲ high, ⚑ urgent.
+const glyphs: Record<Priority, string> = {
+  low: '▁',
+  medium: '▂',
+  high: '▲',
+  urgent: '⚑',
+}
+
 export default function PriorityBadge({ priority }: { priority: Priority }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${styles[priority]}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${styles[priority]}`}
+      aria-label={`Priority: ${labels[priority]}`}
     >
+      <span aria-hidden="true">{glyphs[priority]}</span>
       {labels[priority]}
     </span>
   )

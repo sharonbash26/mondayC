@@ -1,5 +1,6 @@
 import type { Task } from '../../types'
 import PriorityBadge from './PriorityBadge'
+import Avatar from '../Avatar'
 
 const priorityBorder: Record<Task['priority'], string> = {
   low: 'border-l-prio-low',
@@ -32,12 +33,22 @@ export default function TaskCard({
 }) {
   const due = formatDate(task.due_date)
   const overdue = task.status !== 'done' && isOverdue(task.due_date)
+  const statusLabel = task.status.replace('_', ' ')
 
   return (
     <div
       data-testid="task-card"
+      role="button"
+      tabIndex={0}
+      aria-label={`${task.title}. Priority ${task.priority}. Status ${statusLabel}. Press Enter to edit.`}
       onClick={onClick}
-      className={`group cursor-pointer rounded-lg border border-l-4 border-monday-border bg-white p-3 shadow-card transition hover:shadow-modal ${priorityBorder[task.priority]}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick()
+        }
+      }}
+      className={`group cursor-pointer rounded-lg border border-l-4 border-monday-border bg-white p-3 shadow-card transition hover:shadow-modal focus:outline-none focus-visible:ring-2 focus-visible:ring-monday-purple ${priorityBorder[task.priority]}`}
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-monday-text">{task.title}</h3>
@@ -67,11 +78,7 @@ export default function TaskCard({
             📅 {due}
           </span>
         )}
-        {task.assignee && (
-          <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-monday-purple/10 text-[10px] font-semibold text-monday-purple">
-            {task.assignee.slice(0, 2).toUpperCase()}
-          </span>
-        )}
+        {task.assignee && <Avatar name={task.assignee} size={24} className="ml-auto" />}
       </div>
     </div>
   )

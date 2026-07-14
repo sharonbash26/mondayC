@@ -2,9 +2,9 @@ import type { Status, Task } from '../../types'
 import TaskCard from './TaskCard'
 
 const headerStyles: Record<Status, string> = {
-  backlog: 'bg-status-backlog',
-  in_progress: 'bg-status-progress',
-  done: 'bg-status-done',
+  backlog: 'bg-status-backlog text-monday-text',
+  in_progress: 'bg-status-progress text-white',
+  done: 'bg-status-done text-white',
 }
 
 export default function Column({
@@ -28,14 +28,14 @@ export default function Column({
       className="flex w-full min-w-0 flex-col rounded-xl bg-white/60 md:w-80 md:shrink-0"
     >
       <div className={`flex items-center justify-between rounded-t-xl px-3 py-2 ${headerStyles[status]}`}>
-        <span className="text-sm font-semibold text-white">
+        <span className="text-sm font-semibold">
           {label} <span className="ml-1 opacity-80">({tasks.length})</span>
         </span>
         {status === 'backlog' && (
           <button
             data-testid="add-task"
             onClick={onAdd}
-            className="rounded-md bg-white/20 px-2 py-0.5 text-sm font-bold text-white hover:bg-white/30"
+            className="rounded-md bg-black/10 px-2 py-0.5 text-sm font-bold hover:bg-black/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-monday-purple"
             aria-label="Add task"
           >
             +

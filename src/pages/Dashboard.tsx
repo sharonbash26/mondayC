@@ -20,6 +20,38 @@ function isOverdue(d: string | null) {
   return new Date(d + 'T23:59:59') < new Date()
 }
 
+function BarRow({
+  label,
+  count,
+  total,
+  colorClass,
+}: {
+  label: string
+  count: number
+  total: number
+  colorClass: string
+}) {
+  const pct = total ? Math.round((count / total) * 100) : 0
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between text-sm">
+        <span className="capitalize">{label}</span>
+        <span className="font-semibold text-monday-muted">
+          {count} <span className="text-xs">({pct}%)</span>
+        </span>
+      </div>
+      <div className="h-2 w-full overflow-hidden rounded-full bg-monday-bg">
+        <div
+          className={`h-full rounded-full ${colorClass}`}
+          style={{ width: `${pct}%` }}
+          role="img"
+          aria-label={`${label}: ${count} of ${total} tasks, ${pct} percent`}
+        />
+      </div>
+    </div>
+  )
+}
+
 export default function Dashboard() {
   const { tasks, loading } = useTasks()
 
@@ -72,26 +104,30 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="rounded-xl bg-white p-4 shadow-card">
           <h2 className="mb-3 text-sm font-semibold text-monday-muted">By status</h2>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {stats.byStatus.map((s) => (
-              <div key={s.key} className="flex items-center gap-3">
-                <span className={`h-2.5 w-2.5 rounded-full ${statusColor[s.key]}`} />
-                <span className="flex-1 text-sm">{s.label}</span>
-                <span className="text-sm font-semibold">{s.count}</span>
-              </div>
+              <BarRow
+                key={s.key}
+                label={s.label}
+                count={s.count}
+                total={stats.total}
+                colorClass={statusColor[s.key]}
+              />
             ))}
           </div>
         </div>
 
         <div className="rounded-xl bg-white p-4 shadow-card">
           <h2 className="mb-3 text-sm font-semibold text-monday-muted">By priority</h2>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {stats.byPriority.map((p) => (
-              <div key={p.key} className="flex items-center gap-3">
-                <span className={`h-2.5 w-2.5 rounded-full ${prioColor[p.key]}`} />
-                <span className="flex-1 text-sm capitalize">{p.key}</span>
-                <span className="text-sm font-semibold">{p.count}</span>
-              </div>
+              <BarRow
+                key={p.key}
+                label={p.key}
+                count={p.count}
+                total={stats.total}
+                colorClass={prioColor[p.key]}
+              />
             ))}
           </div>
         </div>
