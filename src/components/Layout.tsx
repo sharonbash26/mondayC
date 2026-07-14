@@ -15,8 +15,8 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="flex h-screen overflow-hidden bg-monday-bg">
       {/* Sidebar */}
       <aside
-        className={`fixed z-30 flex h-full w-60 flex-col border-r border-monday-border bg-white transition-transform md:static md:translate-x-0 ${
-          open ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed z-30 flex h-full w-60 flex-col border-r border-monday-border bg-white transition-transform md:static md:visible md:translate-x-0 ${
+          open ? 'visible translate-x-0' : 'invisible -translate-x-full'
         }`}
       >
         <div className="flex items-center gap-2 px-5 py-4">
